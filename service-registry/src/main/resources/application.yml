@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: Service Registry
+server:
+  port: 8088
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    # Da dies das Register selbst ist wird sich weder registriert, noch die Service Registry abgerufen
+    register-with-eureka: false
+    fetch-registry: false
+
+    service-url:
+      defaultZone: http://localhost:8088/eureka
+  dashboard:
+    path: /eureka-ui
+    enabled: true
+
+debug: false

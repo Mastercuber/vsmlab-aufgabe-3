@@ -1,0 +1,6 @@
+* [Startseite](http://localhost:8088/index.html)  
+* [Eureka](http://localhost:8088/eureka)  
+* [Eureka Dashboard](http://localhost:8088/eureka-ui/)  
+* [Zuul](http://localhost:8089/api)
+* [Micro Service Endpunkt](http://localhost:8089/api/appservice)
+* [Micro Service Funktionsendpunkt](http://localhost:8089/api/appservice/appname)
