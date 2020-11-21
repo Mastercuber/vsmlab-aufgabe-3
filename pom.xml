@@ -12,7 +12,7 @@
 
     <modules>
         <module>edge-server</module>
-        <module>microservice</module>
+        <module>product-core-service</module>
         <module>microservice-consumer</module>
         <module>service-registry</module>
     </modules>
