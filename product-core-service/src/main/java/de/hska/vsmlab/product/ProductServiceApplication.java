@@ -39,11 +39,11 @@ public class ProductServiceApplication {
         categoryRepo.save(shoewear);
         final Product lvShoes = new Product("Louis Vuitton Madeleine Pumps Monogram Canvas", 730, shoewear, "jetzt online verfügbar.");
         productRepo.save(lvShoes);
-        logger.error("LV_SHOES: " + lvShoes.getId());
+        logger.info("LV_SHOES: " + lvShoes.getId());
 
         // Add YSL Shoes
         final Product yslShoes = new Product("Opyum Sandale aus Lackleder mit Goldfarbenem Absatz", 975, shoewear, "jetzt online verfügbar. Durchschnittliche Lieferzeit: 1 - 3 Arbeitstage");
         productRepo.save(yslShoes);
-        logger.error("YSL_SHOES: " + yslShoes.getId());
+        logger.info("YSL_SHOES: " + yslShoes.getId());
     }
 }
