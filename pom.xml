@@ -15,5 +15,6 @@
         <module>product-core-service</module>
         <module>microservice-consumer</module>
         <module>service-registry</module>
+        <module>user-core-service</module>
     </modules>
 </project>
