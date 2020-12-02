@@ -1,5 +1,6 @@
 package de.hska.vsmlab.microservice.product;
 
+import com.google.common.collect.Iterables;
 import de.hska.vsmlab.microservice.product.model.Category;
 import de.hska.vsmlab.microservice.product.model.ProductRepo;
 import de.hska.vsmlab.microservice.product.model.Product;
@@ -31,11 +32,9 @@ public class ProductController implements IProductController{
     }
 
     @Override
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<Iterable<Product>> getAllProducts() {
         final Iterable<Product> products = productRepo.findAll();
-        ArrayList<Product> productsArrayList = new ArrayList<>();
-        products.forEach(productsArrayList::add);
-        return new ResponseEntity<>(productsArrayList, HttpStatus.OK);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @Override

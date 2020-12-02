@@ -16,5 +16,6 @@
         <module>microservice-consumer</module>
         <module>service-registry</module>
         <module>user-core-service</module>
+        <module>role-core-service</module>
     </modules>
 </project>

@@ -15,7 +15,7 @@ public interface IProductController {
     ResponseEntity<Product> getProduct(@PathVariable Long productId);
 
     @RequestMapping(value= "/products", method = RequestMethod.GET)
-    ResponseEntity<List<Product>> getAllProducts();
+    ResponseEntity<Iterable<Product>> getAllProducts();
 
     @RequestMapping(value = "/product/{productId}", method = RequestMethod.POST)
     // hier auch mit PathVariable??

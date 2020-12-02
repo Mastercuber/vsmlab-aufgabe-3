@@ -11,7 +11,7 @@ public interface IUserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    User createUser(@RequestParam("email") final String email, @RequestParam("password") final String password, @RequestParam("firstname") final String firstname, @RequestParam("lastname") final String lastname);
+    User createUser(@RequestParam final String email, @RequestParam final String password, @RequestParam final String firstname, @RequestParam final String lastname);
 
     @RequestMapping(value = "/user/{userId}/active", method = RequestMethod.PATCH)
     @ResponseBody
