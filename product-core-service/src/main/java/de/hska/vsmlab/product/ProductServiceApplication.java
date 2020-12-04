@@ -23,10 +23,6 @@ public class ProductServiceApplication {
     @Autowired
     private ProductRepo productRepo;
 
-    @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
-    @Autowired
-    private CategoryRepo categoryRepo;
-
 
     public static void main(String[] args) {
         SpringApplication.run(de.hska.vsmlab.product.ProductServiceApplication.class, args);
