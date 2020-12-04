@@ -1,6 +1,5 @@
 package de.hska.vsmlab.product;
 
-import de.hska.vsmlab.product.model.Category;
 import de.hska.vsmlab.product.model.Product;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +20,24 @@ public class ProductController implements IProductController{
     @Lazy
     private ProductRepo productRepo;
 
-    @Override
-    public ResponseEntity<Product> getProduct(final Long productId) {
-        final Optional<Product> product = productRepo.findById(productId);
-        if (product.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(product.get(), HttpStatus.OK);
-    }
+//    Move this to composite service
+//    @Override
+//    public ResponseEntity<String> addProduct(String productName, double price, Category category, String details) {
+//
+//        final Iterable<Product> products = productRepo.findAll();
+//
+//        // validate name, price and category
+//        // Cannot add item with the same name, price and category.
+//        for (Product product : products) {
+//            if (product.getName().equals(productName) && product.getPrice() == price && product.getCategory() == category) {
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+//        }
+//
+//        final Product newProduct = new Product(productName, price, category, details);
+//        productRepo.save(newProduct);
+//        return new ResponseEntity<>("Product successfully added", HttpStatus.BAD_REQUEST);
+//    }
 
     @Override
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -39,21 +48,27 @@ public class ProductController implements IProductController{
     }
 
     @Override
-    public ResponseEntity<String> addProduct(String productName, double price, Category category, String details) {
-
+    public ResponseEntity<List<Product>> findProduct(String description, double minPrice, double maxPrice) {
         final Iterable<Product> products = productRepo.findAll();
-
-        // validate name, price and category
-        // Cannot add item with the same name, price and category.
+        ArrayList<Product> searchResults = new ArrayList<>();
+        String searchWord = "\\b" + description.toLowerCase() + "\\b";
         for (Product product : products) {
-            if (product.getName().equals(productName) && product.getPrice() == price && product.getCategory() == category) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice){
+                if(product.getName().matches(searchWord) || product.getCategory().getName().matches(searchWord) || product.getDetails().matches(searchWord)){
+                    searchResults.add(product);
+                }
             }
         }
+        return new ResponseEntity<List<Product>>(searchResults, HttpStatus.OK);
+    }
 
-        final Product newProduct = new Product(productName, price, category, details);
-        productRepo.save(newProduct);
-        return new ResponseEntity<>("Product successfully added", HttpStatus.BAD_REQUEST);
+    @Override
+    public ResponseEntity<Product> getProduct(final Long productId) {
+        final Optional<Product> product = productRepo.findById(productId);
+        if (product.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 
     @Override
