@@ -1,6 +1,7 @@
-package de.hska.vsmlab.product;
+package de.hska.vsmlab.category;
 
-import de.hska.vsmlab.product.model.ProductRepo;
+import de.hska.vsmlab.category.model.Category;
+import de.hska.vsmlab.category.model.CategoryRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,17 @@ import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ProductServiceApplication {
+public class CategoryServiceApplication {
 
-    final Logger logger = LoggerFactory.getLogger(ProductServiceApplication.class);
+    final Logger logger = LoggerFactory.getLogger(CategoryServiceApplication.class);
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
-    private ProductRepo productRepo;
+    private CategoryRepo categoryRepo;
 
 
     public static void main(String[] args) {
-        SpringApplication.run(de.hska.vsmlab.product.ProductServiceApplication.class, args);
+        SpringApplication.run(de.hska.vsmlab.category.CategoryServiceApplication.class, args);
     }
 
     @PostConstruct
