@@ -1,8 +1,6 @@
 package de.hska.vsmlab.category;
 
 import de.hska.vsmlab.category.model.Category;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,15 +15,17 @@ public interface ICategoryController {
 
     // add new category
     @RequestMapping(value = "/category", method = RequestMethod.POST)
-    ResponseEntity<String> addCategory(String categoryName);
+    @ResponseBody
+    Category addCategory(String categoryName);
 
     // get all categories
     @RequestMapping(value= "/categories", method = RequestMethod.GET)
-    ResponseEntity<List<Category>> getAllCategories();
+    @ResponseBody
+    List<Category> getAllCategories();
 
     // delete category
     @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.DELETE)
-    ResponseEntity<String> deleteCategory(@PathVariable long categoryId);
+    boolean deleteCategory(@PathVariable long categoryId);
 
 
 }

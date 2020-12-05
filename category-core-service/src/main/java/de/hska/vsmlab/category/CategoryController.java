@@ -4,8 +4,6 @@ import de.hska.vsmlab.category.model.Category;
 import de.hska.vsmlab.category.model.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -20,17 +18,17 @@ public class CategoryController implements ICategoryController {
     private CategoryRepo categoryRepo;
 
     @Override
-    public ResponseEntity<Category> getCategory(final Long categoryId) {
+    public Category getCategory(final Long categoryId) {
         final Optional<Category> category = categoryRepo.findById(categoryId);
         if (category.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
-        return new ResponseEntity<>(category.get(), HttpStatus.OK);
+        return category.get();
     }
 
     // add new category
     @Override
-    public ResponseEntity<String> addCategory(String categoryName) {
+    public Category addCategory(String categoryName) {
 
         final Iterable<Category> categories = categoryRepo.findAll();
 
@@ -38,33 +36,33 @@ public class CategoryController implements ICategoryController {
         // Cannot add category with already existing name
         for (Category category : categories) {
             if (category.getName().equals(categoryName)) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return null;
             }
         }
 
         final Category newCategory = new Category(categoryName);
         categoryRepo.save(newCategory);
-        return new ResponseEntity<>("Category successfully added", HttpStatus.BAD_REQUEST);
+        return newCategory;
     }
 
     // get all categories
     @Override
-    public ResponseEntity<List<Category>> getAllCategories() {
+    public List<Category> getAllCategories() {
         final Iterable<Category> categories = categoryRepo.findAll();
         ArrayList<Category> categoriesArrayList = new ArrayList<>();
         categories.forEach(categoriesArrayList::add);
-        return new ResponseEntity<>(categoriesArrayList, HttpStatus.OK);
+        return categoriesArrayList;
     }
 
     // delete category
     @Override
-    public ResponseEntity<String> deleteCategory(final long categoryId) {
+    public boolean deleteCategory(final long categoryId) {
         final Optional<Category> category = categoryRepo.findById(categoryId);
         if (category.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
         }
         categoryRepo.deleteById(categoryId);
-        return new ResponseEntity<>(categoryId + " successfully deleted.", HttpStatus.OK);
+        return true;
     }
 
 }

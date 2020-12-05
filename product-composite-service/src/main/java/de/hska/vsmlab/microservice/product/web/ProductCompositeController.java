@@ -1,6 +1,5 @@
 package de.hska.vsmlab.microservice.product.web;
 
-import com.netflix.discovery.converters.Auto;
 import de.hska.vsmlab.microservice.product.perstistence.model.Category;
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
