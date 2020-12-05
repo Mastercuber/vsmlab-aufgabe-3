@@ -25,9 +25,9 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public User createUser(String email, String password, String firstname, String lastname) {
+    public User createUser(String username, String password, String firstname, String lastname) {
         User user = new User();
-        user.setUsername(firstname);
+        user.setUsername(username);
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
@@ -37,31 +37,43 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public Boolean setActive(Long userId) {
+    public User setActive(Long userId) {
         Optional<User> byId = userDao.findById(userId);
         if (byId.isPresent()) {
             User user = byId.get();
             user.setActive(true);
-            userDao.save(user);
-
-            return true;
+            return userDao.save(user);
         }
 
-        return false;
+        return null;
     }
 
     @Override
-    public Boolean setInactive(Long userId) {
+    public User setInactive(Long userId) {
         Optional<User> byId = userDao.findById(userId);
         if (byId.isPresent()) {
             User user = byId.get();
             user.setActive(false);
-            userDao.save(user);
-
-            return true;
+            return userDao.save(user);
         }
 
-        return false;
+        return null;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
+    public boolean deleteUser(Long userId) {
+        try {
+            userDao.deleteById(userId);
+            return true;
+
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
 

@@ -32,7 +32,7 @@ public class UserServiceApplication {
         User user = new User();
         user.setFirstname("Armin");
         user.setLastname("Kunkel");
-        user.setUsername("armin");
+        user.setUsername("armin@hs-karlsruhe.de");
         user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
         user.setRoleId(1);
 

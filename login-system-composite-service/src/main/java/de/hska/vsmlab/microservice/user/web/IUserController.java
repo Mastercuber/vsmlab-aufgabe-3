@@ -17,9 +17,17 @@ public interface IUserController {
 
     @RequestMapping(value = "/user/{userId}/active", method = RequestMethod.PATCH)
     @ResponseBody
-    Boolean setActive(@PathVariable final Long userId);
+    User setActive(@RequestHeader(value="X-HTTP-Method-Override", defaultValue="PATCH") @PathVariable final Long userId);
 
     @RequestMapping(value = "/user/{userId}/inactive", method = RequestMethod.PATCH)
     @ResponseBody
-    Boolean setInactive(@PathVariable final Long userId);
+    User setInactive(@PathVariable final Long userId);
+
+    @RequestMapping(value = "/user/byUsername", method = RequestMethod.GET)
+    @ResponseBody
+    User getUserByUsername(@RequestParam String username);
+
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    boolean deleteUser(@PathVariable Long userId);
 }
