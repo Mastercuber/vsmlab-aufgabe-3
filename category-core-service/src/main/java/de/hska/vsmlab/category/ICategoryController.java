@@ -1,17 +1,23 @@
 package de.hska.vsmlab.category;
 
+
+
 import de.hska.vsmlab.category.model.Category;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 public interface ICategoryController {
+
+    // get a category by id
     @RequestMapping(value= "/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
-    Category getCategory(@PathVariable Long categoryId);
+    Category getCategoryById(@PathVariable long categoryId);
+
+    // get one category
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    @ResponseBody
+    Category getCategoryByName(@RequestParam String categoryName);
 
     // add new category
     @RequestMapping(value = "/category", method = RequestMethod.POST)
@@ -19,7 +25,7 @@ public interface ICategoryController {
     Category addCategory(String categoryName);
 
     // get all categories
-    @RequestMapping(value= "/categories", method = RequestMethod.GET)
+    @RequestMapping(value= "/category", method = RequestMethod.GET)
     @ResponseBody
     List<Category> getAllCategories();
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ProductController implements IProductController{
+public class ProductController implements IProductController {
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
@@ -27,21 +27,6 @@ public class ProductController implements IProductController{
     }
 
     @Override
-    public List<Product>  findProduct(String description, double minPrice, double maxPrice) {
-        final Iterable<Product> products = productRepo.findAll();
-        ArrayList<Product> searchResults = new ArrayList<>();
-        String searchWord = "\\b" + description.toLowerCase() + "\\b";
-        for (Product product : products) {
-            if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice){
-                if(product.getName().matches(searchWord) || product.getDetails().matches(searchWord)){
-                    searchResults.add(product);
-                }
-            }
-        }
-        return searchResults;
-    }
-
-    @Override
     public Product getProduct(final Long productId) {
         final Optional<Product> product = productRepo.findById(productId);
         if (product.isEmpty()) {
@@ -53,11 +38,52 @@ public class ProductController implements IProductController{
     @Override
     public boolean deleteProduct(final long productId) {
         final Optional<Product> product = productRepo.findById(productId);
-        if (product.isEmpty()){
+        if (product.isEmpty()) {
             return false;
         }
         productRepo.deleteById(productId);
         return true;
+    }
+
+    @Override
+    public Product addProduct(String productName, double price, long categoryId, String details) {
+
+        // check if product already exist
+        final Iterable<Product> products = productRepo.findAll();
+        for (Product product : products) {
+            // check if there is already a product with the same name, price and category, otherwise add product
+            if (!(product.getName() == productName && product.getPrice() == price && product.getCategoryId() == categoryId)) {
+                return new Product(productName, price, categoryId, details);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Product> findProductByPrice(double minPrice, double maxPrice) {
+        final Iterable<Product> products = productRepo.findAll();
+        ArrayList<Product> searchResults = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice) {
+                searchResults.add(product);
+            }
+        }
+        return searchResults;
+    }
+
+    @Override
+    public List<Product> findProductByDescAndPrice(String description, double minPrice, double maxPrice) {
+        final Iterable<Product> products = productRepo.findAll();
+        ArrayList<Product> searchResults = new ArrayList<>();
+        String searchWord = "\\b" + description.toLowerCase() + "\\b";
+        for (Product product : products) {
+            if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice) {
+                if (product.getName().matches(searchWord) || product.getDetails().matches(searchWord)) {
+                    searchResults.add(product);
+                }
+            }
+        }
+        return searchResults;
     }
 }
 

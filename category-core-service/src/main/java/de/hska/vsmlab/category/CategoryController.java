@@ -18,12 +18,25 @@ public class CategoryController implements ICategoryController {
     private CategoryRepo categoryRepo;
 
     @Override
-    public Category getCategory(final Long categoryId) {
+    public Category getCategoryById(long categoryId) {
         final Optional<Category> category = categoryRepo.findById(categoryId);
         if (category.isEmpty()){
             return null;
         }
         return category.get();
+    }
+
+    @Override
+    public Category getCategoryByName(String categoryName) {
+
+        final Iterable<Category> categories = categoryRepo.findAll();
+
+        for (Category category : categories) {
+            if (category.getName().equals(categoryName)) {
+                return category;
+            }
+        }
+        return null;
     }
 
     // add new category
