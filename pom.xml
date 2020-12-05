@@ -16,6 +16,7 @@
         <module>service-registry</module>
         <module>user-core-service</module>
         <module>role-core-service</module>
+        <module>login-system-composite-service</module>
         <module>product-core-service</module>
         <module>category-core-service</module>
     </modules>

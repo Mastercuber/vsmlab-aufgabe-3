@@ -2,7 +2,7 @@ spring:
   application:
     name: Edge Server (Zuul) | Loadbalancer (Ribbon)
 server:
-  port: 8089
+  port: 8090
 eureka:
   client:
     healthcheck:
