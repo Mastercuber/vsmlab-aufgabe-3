@@ -47,12 +47,11 @@ public class ProductController implements IProductController {
 
     @Override
     public Product addProduct(String productName, double price, long categoryId, String details) {
-
         // check if product already exist
         final Iterable<Product> products = productRepo.findAll();
         for (Product product : products) {
             // check if there is already a product with the same name, price and category, otherwise add product
-            if (!(product.getName() == productName && product.getPrice() == price && product.getCategoryId() == categoryId)) {
+            if (!(product.getName().equals(productName) && product.getPrice() == price && product.getCategoryId() == categoryId)) {
                 return new Product(productName, price, categoryId, details);
             }
         }
