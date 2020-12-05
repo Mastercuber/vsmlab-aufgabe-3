@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.user;
+package de.hska.vsmlab.microservice.product;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,17 +8,18 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
 @EnableHystrixDashboard
-@RibbonClient("login-system-composite-service")
-public class LoginSystemCompositeServiceApplication {
+@RibbonClient("product-composite-service")
+@EnableFeignClients
+public class ProductCompositeServiceApplication {
 
-    final Logger logger = LoggerFactory.getLogger(LoginSystemCompositeServiceApplication.class);
+    final Logger logger = LoggerFactory.getLogger(ProductCompositeServiceApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(LoginSystemCompositeServiceApplication.class, args);
+        SpringApplication.run(ProductCompositeServiceApplication.class, args);
     }
 }

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>de.hska.vsmlab</groupId>
-	<artifactId>login-system-composite-service</artifactId>
+	<artifactId>product-composite-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>login-system-composite-service</name>
-	<description>Login System Composite Microservice</description>
+	<name>product-composite-service</name>
+	<description>Product Composite Microservice</description>
 
 	<properties>
 		<java.version>11</java.version>
