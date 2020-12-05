@@ -12,10 +12,11 @@
 
     <modules>
         <module>edge-server</module>
-        <module>product-core-service</module>
         <module>microservice-consumer</module>
         <module>service-registry</module>
         <module>user-core-service</module>
         <module>role-core-service</module>
+        <module>product-core-service</module>
+        <module>category-core-service</module>
     </modules>
 </project>
