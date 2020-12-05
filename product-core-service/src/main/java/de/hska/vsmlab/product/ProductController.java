@@ -54,7 +54,7 @@ public class ProductController implements IProductController{
         String searchWord = "\\b" + description.toLowerCase() + "\\b";
         for (Product product : products) {
             if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice){
-                if(product.getName().matches(searchWord) || product.getCategory().getName().matches(searchWord) || product.getDetails().matches(searchWord)){
+                if(product.getName().matches(searchWord) || product.getDetails().matches(searchWord)){
                     searchResults.add(product);
                 }
             }

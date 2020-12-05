@@ -1,8 +1,5 @@
 package de.hska.vsmlab.product;
 
-import de.hska.vsmlab.product.model.Category;
-import de.hska.vsmlab.product.model.CategoryRepo;
-import de.hska.vsmlab.product.model.Product;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
