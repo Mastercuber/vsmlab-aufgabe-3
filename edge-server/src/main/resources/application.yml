@@ -16,8 +16,30 @@ eureka:
 
 debug: false
 zuul:
-  servlet-path: /api
+  ignoredServices: '*'
   routes:
-    appservice:
-      path: /appservice/*
-      serviceId: application-service
+    login:
+      path: /login
+      serviceId: login-system-service
+    logout:
+      path: /logout
+      serviceId: login-system-service
+    user/register:
+      path: /user/register
+      serviceId: login-system-service
+    product/add:
+      path: /product/add
+      serviceId: product-composite-service
+    product/find:
+      path: /product/find
+      serviceId: product-composite-service
+    product:
+      path: /product
+      serviceId: product-service
+    product-level-2:
+      path: /product/*
+      serviceId: product-service
+      stripPrefix: false
+    category:
+      path: /category
+      serviceId: category-service

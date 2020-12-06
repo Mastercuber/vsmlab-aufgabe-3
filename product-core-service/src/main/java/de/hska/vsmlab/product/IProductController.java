@@ -22,11 +22,11 @@ public interface IProductController {
     @RequestMapping(value= "/product", method = RequestMethod.POST)
     Product addProduct(@RequestParam String name, @RequestParam double price, @RequestParam long categoryId, @RequestParam String details);
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET, params = {"minPrice", "maxPrice"})
     @ResponseBody
     List<Product> findProductByPrice(@RequestParam double minPrice, @RequestParam double maxPrice);
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET, params = {"description", "minPrice", "maxPrice"})
     @ResponseBody
     List<Product> findProductByDescAndPrice(@RequestParam String description, @RequestParam double minPrice, @RequestParam double maxPrice);
 }

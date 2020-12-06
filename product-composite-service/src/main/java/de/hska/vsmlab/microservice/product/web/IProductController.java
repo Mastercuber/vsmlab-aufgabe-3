@@ -2,10 +2,12 @@ package de.hska.vsmlab.microservice.product.web;
 
 
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@FeignClient("product-service")
 public interface IProductController {
 
 
