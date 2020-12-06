@@ -2,10 +2,12 @@ package de.hska.vsmlab.microservice.product.web;
 
 
 import de.hska.vsmlab.microservice.product.perstistence.model.Category;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@FeignClient("category-service")
 public interface ICategoryController {
     @RequestMapping(value= "/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody

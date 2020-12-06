@@ -15,7 +15,7 @@ public interface ICategoryController {
     Category getCategoryById(@PathVariable long categoryId);
 
     // get one category
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    @RequestMapping(value = "/category", method = RequestMethod.GET, params = {"categoryName"})
     @ResponseBody
     Category getCategoryByName(@RequestParam String categoryName);
 
