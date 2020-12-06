@@ -1,22 +1,26 @@
 package de.hska.vsmlab.product;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vsmlab.product.model.Product;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class ProductController implements IProductController {
+
+    private Map<Long, Product> productCache = new LinkedHashMap<>();
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
     @Lazy
     private ProductRepo productRepo;
+
+
 
     @Override
     public List<Product> getAllProducts() {
@@ -27,12 +31,22 @@ public class ProductController implements IProductController {
     }
 
     @Override
+    @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     public Product getProduct(final Long productId) {
-        final Optional<Product> product = productRepo.findById(productId);
-        if (product.isEmpty()) {
+        final Optional<Product> productOpt = productRepo.findById(productId);
+        if (productOpt.isEmpty()) {
             return null;
         }
-        return product.get();
+        Product product = productOpt.get();
+        productCache.putIfAbsent(productId, product);
+
+        return product;
+    }
+
+    public Product getProductCache(final Long productId) {
+        return productCache.getOrDefault(productId, new Product());
     }
 
     @Override
