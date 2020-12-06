@@ -28,16 +28,11 @@ public class CategoryServiceApplication {
 
     @PostConstruct
     public void generateTestData() {
-//        // Add LV Shoes
-//        final Category shoewear = new Category("Shoewear");
-//        categoryRepo.save(shoewear);
-//        final Product lvShoes = new Product("Louis Vuitton Madeleine Pumps Monogram Canvas", 730, shoewear, "jetzt online verfügbar.");
-//        productRepo.save(lvShoes);
-//        logger.info("LV_SHOES: " + lvShoes.getId());
-//
-//        // Add YSL Shoes
-//        final Product yslShoes = new Product("Opyum Sandale aus Lackleder mit Goldfarbenem Absatz", 975, shoewear, "jetzt online verfügbar. Durchschnittliche Lieferzeit: 1 - 3 Arbeitstage");
-//        productRepo.save(yslShoes);
-//        logger.info("YSL_SHOES: " + yslShoes.getId());
+        Category foodCategory = new Category();
+        foodCategory.setName("Food");
+
+        categoryRepo.save(foodCategory);
+
+        logger.info("CATEGORY_ID: " + foodCategory.getId());
     }
 }

@@ -22,7 +22,7 @@ public interface ICategoryController {
     // add new category
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     @ResponseBody
-    Category addCategory(String categoryName);
+    Category addCategory(@RequestBody String categoryName);
 
     // get all categories
     @RequestMapping(value= "/category", method = RequestMethod.GET)

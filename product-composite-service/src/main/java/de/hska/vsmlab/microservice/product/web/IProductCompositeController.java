@@ -13,7 +13,7 @@ public interface IProductCompositeController {
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
     @ResponseBody
-    Product addProduct(String productName, double price, Category category, String details);
+    Product addProduct(String productName, Double price, Category category, String details);
 
     @RequestMapping(value = "/product/find", method = RequestMethod.GET)
     @ResponseBody
