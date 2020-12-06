@@ -20,5 +20,6 @@
         <module>product-composite-service</module>
         <module>product-core-service</module>
         <module>category-core-service</module>
+        <module>hystrix-dashboard</module>
     </modules>
 </project>
