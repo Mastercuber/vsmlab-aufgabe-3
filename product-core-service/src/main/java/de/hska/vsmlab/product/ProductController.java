@@ -3,12 +3,19 @@ package de.hska.vsmlab.product;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vsmlab.product.model.Product;
+import de.hska.vsmlab.product.model.ProductAlreadyExistsException;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController implements IProductController {
@@ -21,13 +28,16 @@ public class ProductController implements IProductController {
     private ProductRepo productRepo;
 
 
-
     @Override
     public List<Product> getAllProducts() {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> productsArrayList = new ArrayList<>();
         products.forEach(productsArrayList::add);
         return productsArrayList;
+    }
+
+    public List<Product> getAllProductsCache() {
+        return new ArrayList<>(productCache.values());
     }
 
     @Override
@@ -60,19 +70,23 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public Product addProduct(String productName, double price, long categoryId, String details) {
+    public Product addProduct(final Product productToAdd) throws ProductAlreadyExistsException {
         // check if product already exist
         final Iterable<Product> products = productRepo.findAll();
         for (Product product : products) {
             // check if there is already a product with the same name, price and category, otherwise add product
-            if (!(product.getName().equals(productName) && product.getPrice() == price && product.getCategoryId() == categoryId)) {
-                return new Product(productName, price, categoryId, details);
+            if ((product.getName().equals(productToAdd.getName()) && product.getPrice() == productToAdd.getPrice() && product.getCategoryId() == productToAdd.getCategoryId())) {
+                throw new ProductAlreadyExistsException();
             }
         }
-        return null;
+        productRepo.save(productToAdd);
+        return productToAdd;
     }
 
     @Override
+    @HystrixCommand(fallbackMethod = "findProductByPriceCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     public List<Product> findProductByPrice(double minPrice, double maxPrice) {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> searchResults = new ArrayList<>();
@@ -84,19 +98,34 @@ public class ProductController implements IProductController {
         return searchResults;
     }
 
+    public List<Product> findProductByPriceCache(double minPrice, double maxPrice) {
+        return productCache.values().stream().filter((Product p) -> p.getPrice() >= minPrice && p.getPrice() <= maxPrice).collect(Collectors.toList());
+
+    }
+
     @Override
+    @HystrixCommand(fallbackMethod = "findProductByDescAndPriceCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     public List<Product> findProductByDescAndPrice(String description, double minPrice, double maxPrice) {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> searchResults = new ArrayList<>();
-        String searchWord = "\\b" + description.toLowerCase() + "\\b";
         for (Product product : products) {
-            if (product.getPrice() <= maxPrice && product.getPrice() >= minPrice) {
-                if (product.getName().matches(searchWord) || product.getDetails().matches(searchWord)) {
-                    searchResults.add(product);
-                }
+            if (this.matchesDescriptionOrPrice(product, description, minPrice, maxPrice)) {
+                searchResults.add(product);
             }
         }
         return searchResults;
+    }
+
+    public List<Product> findProductByDescAndPriceCache(String desc, double minPrice, double maxPrice) {
+
+        return productCache.values().stream().filter((Product p) -> this.matchesDescriptionOrPrice(p, desc, minPrice, maxPrice)).collect(Collectors.toList());
+    }
+
+    private boolean matchesDescriptionOrPrice(Product product, String description, double minPrice, double maxPrice) {
+        String searchWord = "\\b" + description.toLowerCase() + "\\b";
+        return product.getPrice() >= minPrice && product.getPrice() <= maxPrice && (product.getName().matches(searchWord) || product.getDetails().matches(searchWord));
     }
 }
 

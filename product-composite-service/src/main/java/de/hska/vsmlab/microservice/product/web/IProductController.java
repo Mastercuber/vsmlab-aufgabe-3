@@ -23,7 +23,7 @@ public interface IProductController {
     boolean deleteProduct(@PathVariable long productId);
 
     @RequestMapping(value= "/product", method = RequestMethod.POST)
-    Product addProduct(@RequestParam String name, @RequestParam Double price, @RequestParam long categoryId, @RequestParam String details);
+    Product addProduct(@RequestBody Product body);
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     @ResponseBody
