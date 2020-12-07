@@ -29,10 +29,17 @@ public class ProductController implements IProductController {
 
 
     @Override
+    @HystrixCommand(fallbackMethod = "getAllProductsCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     public List<Product> getAllProducts() {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> productsArrayList = new ArrayList<>();
         products.forEach(productsArrayList::add);
+        //save to cache
+        for(Product prod:productsArrayList) {
+            productCache.putIfAbsent(prod.getId(), prod);
+        }
         return productsArrayList;
     }
 

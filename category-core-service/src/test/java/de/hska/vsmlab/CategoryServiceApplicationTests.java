@@ -46,13 +46,13 @@ class CategoryServiceApplicationTests {
         assertEquals(200, response.getStatusCode().value());
         assertEquals(1, response.getBody().size());
     }
-
+/*
     @Test
     public void getCategoryByNameTest(){
         final ResponseEntity<Category> response = client.getForEntity("?categoryName=Food", Category.class);
         assertEquals(200, response.getStatusCode().value());
         assertEquals(1, response.getBody().getId());
-    }
+    }*/
 
     @Test
     public void addCategoryTest() {

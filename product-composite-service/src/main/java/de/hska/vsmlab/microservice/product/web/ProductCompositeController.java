@@ -2,7 +2,10 @@ package de.hska.vsmlab.microservice.product.web;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import de.hska.vsmlab.microservice.product.perstistence.model.Category;
+import de.hska.vsmlab.microservice.product.perstistence.model.CategoryNotExistsException;
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
+import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +34,21 @@ public class ProductCompositeController implements IProductCompositeController {
     @Override
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")})
-    public Product addProduct(Product body) {
-        return productCoreService.addProduct(body);
+    public Product addProduct(Product body) throws CategoryNotExistsException, ProductAlreadyExistsException {
+        Product product;
+        Category cat = categoryService.getCategoryById(body.getCategoryId());
+        if(cat == null)
+        {
+            throw new CategoryNotExistsException();
+        }
+        try
+        {
+            product = productCoreService.addProduct(body);
+        }
+        catch(ProductAlreadyExistsException ex){
+            throw ex;
+        }
+        return product;
     }
 
 
