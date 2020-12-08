@@ -6,14 +6,11 @@ import de.hska.vsmlab.category.model.Category;
 import de.hska.vsmlab.category.model.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 @RestController
-@Component
 public class CategoryController implements ICategoryController {
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
@@ -35,7 +32,7 @@ public class CategoryController implements ICategoryController {
         return cat;
     }
 
-    public Category getCategoryByIdCache(Long categoryId) {
+    public Category getCategoryByIdCache(long categoryId) {
         return categoryCache.getOrDefault(categoryId, new Category());
     }
 

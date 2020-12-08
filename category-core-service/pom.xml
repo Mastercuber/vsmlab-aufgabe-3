@@ -72,7 +72,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-netflix-hystrix-dashboard</artifactId>
         </dependency>
-    </dependencies>
+	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>

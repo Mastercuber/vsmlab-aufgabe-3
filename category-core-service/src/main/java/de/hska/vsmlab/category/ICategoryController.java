@@ -1,7 +1,6 @@
 package de.hska.vsmlab.category;
 
 
-
 import de.hska.vsmlab.category.model.Category;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public interface ICategoryController {
 
     // get a category by id
-    @RequestMapping(value= "/category/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     Category getCategoryById(@PathVariable long categoryId);
 
@@ -25,7 +24,7 @@ public interface ICategoryController {
     Category addCategory(@RequestBody String categoryName);
 
     // get all categories
-    @RequestMapping(value= "/category", method = RequestMethod.GET)
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
     @ResponseBody
     List<Category> getAllCategories();
 

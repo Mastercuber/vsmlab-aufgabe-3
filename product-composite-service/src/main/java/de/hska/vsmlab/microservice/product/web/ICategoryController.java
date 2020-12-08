@@ -9,27 +9,28 @@ import java.util.List;
 
 @FeignClient("category-service")
 public interface ICategoryController {
-    @RequestMapping(value= "/category/{categoryId}", method = RequestMethod.GET)
+
+    // get a category by id
+    @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     Category getCategoryById(@PathVariable long categoryId);
 
-/*    @RequestMapping()
+/*    // get one category
+    @RequestMapping(value = "/category", method = RequestMethod.GET, params = {"categoryName"})
     @ResponseBody
     Category getCategoryByName(@RequestParam String categoryName);*/
 
     // add new category
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     @ResponseBody
-    Category addCategory(String categoryName);
+    Category addCategory(@RequestBody String categoryName);
 
     // get all categories
-    @RequestMapping(value= "/categories", method = RequestMethod.GET)
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
     @ResponseBody
     List<Category> getAllCategories();
 
     // delete category
     @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.DELETE)
     boolean deleteCategory(@PathVariable long categoryId);
-
-
 }

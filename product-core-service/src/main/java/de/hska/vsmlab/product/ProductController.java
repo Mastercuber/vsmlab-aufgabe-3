@@ -3,7 +3,6 @@ package de.hska.vsmlab.product;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vsmlab.product.model.Product;
-import de.hska.vsmlab.product.model.ProductAlreadyExistsException;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -47,6 +46,7 @@ public class ProductController implements IProductController {
         return new ArrayList<>(productCache.values());
     }
 
+
     @Override
     @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
@@ -66,6 +66,7 @@ public class ProductController implements IProductController {
         return productCache.getOrDefault(productId, new Product());
     }
 
+
     @Override
     public boolean deleteProduct(final long productId) {
         final Optional<Product> product = productRepo.findById(productId);
@@ -77,13 +78,13 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public Product addProduct(final Product productToAdd) throws ProductAlreadyExistsException {
+    public Product addProduct(final Product productToAdd){
         // check if product already exist
         final Iterable<Product> products = productRepo.findAll();
         for (Product product : products) {
             // check if there is already a product with the same name, price and category, otherwise add product
             if ((product.getName().equals(productToAdd.getName()) && product.getPrice() == productToAdd.getPrice() && product.getCategoryId() == productToAdd.getCategoryId())) {
-                throw new ProductAlreadyExistsException();
+                return null;
             }
         }
         productRepo.save(productToAdd);
@@ -125,13 +126,38 @@ public class ProductController implements IProductController {
         return searchResults;
     }
 
+    @Override
+    @HystrixCommand(fallbackMethod = "getAllProductsByCategoryIdCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
+    public List<Product> getAllProductsByCategoryId(long categoryId) {
+        final Iterable<Product> products = productRepo.findAll();
+        ArrayList<Product> results = new ArrayList<>();
+        for(Product product: products){
+            if(product.getCategoryId() == categoryId){
+                results.add(product);
+            }
+        }
+        return results;
+    }
+
+    public List<Product> getAllProductsByCategoryIdCache(long categoryId) {
+        ArrayList<Product> resultsFromCache = new ArrayList<>();
+        for(Product product: productCache.values()){
+            if(product.getCategoryId() == categoryId){
+                resultsFromCache.add(product);
+            }
+        }
+        return resultsFromCache;
+    }
+
     public List<Product> findProductByDescAndPriceCache(String desc, double minPrice, double maxPrice) {
 
         return productCache.values().stream().filter((Product p) -> this.matchesDescriptionOrPrice(p, desc, minPrice, maxPrice)).collect(Collectors.toList());
     }
 
     private boolean matchesDescriptionOrPrice(Product product, String description, double minPrice, double maxPrice) {
-        String searchWord = "\\b" + description.toLowerCase() + "\\b";
+        final String searchWord = description.toLowerCase();
         return product.getPrice() >= minPrice && product.getPrice() <= maxPrice && (product.getName().matches(searchWord) || product.getDetails().matches(searchWord));
     }
 }
