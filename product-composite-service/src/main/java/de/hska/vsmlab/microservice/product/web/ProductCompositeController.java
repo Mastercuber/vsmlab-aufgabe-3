@@ -31,17 +31,16 @@ public class ProductCompositeController implements IProductCompositeController {
     private final Map<Long, Product> productCache = new LinkedHashMap<>();
 
     // no fallback method, the request will just fail
-    @Override
+/*    @Override
     @HystrixCommand(commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")})
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")})*/
     public Product addProduct(Product newProduct) throws ProductAlreadyExistsException, CategoryDoesNotExistsException {
 
-        Product product= productCoreService.addProduct(newProduct);
         Category cat = categoryService.getCategoryById(newProduct.getCategoryId());
         if (cat == null) {
             throw new CategoryDoesNotExistsException();
         }
-
+        Product product= productCoreService.addProduct(newProduct);
         if (product == null) {
             throw new ProductAlreadyExistsException();
         }
