@@ -20,24 +20,12 @@ public class CategoryController implements ICategoryController {
     @Override
     public Category getCategoryById(long categoryId) {
         final Optional<Category> category = categoryRepo.findById(categoryId);
-        if (category.isEmpty()){
+        if (category.isEmpty()) {
             return null;
         }
         return category.get();
     }
 
-    @Override
-    public Category getCategoryByName(String categoryName) {
-
-        final Iterable<Category> categories = categoryRepo.findAll();
-
-        for (Category category : categories) {
-            if (category.getName().equals(categoryName)) {
-                return category;
-            }
-        }
-        return null;
-    }
 
     // add new category
     @Override
@@ -71,7 +59,7 @@ public class CategoryController implements ICategoryController {
     @Override
     public boolean deleteCategory(final long categoryId) {
         final Optional<Category> category = categoryRepo.findById(categoryId);
-        if (category.isEmpty()){
+        if (category.isEmpty()) {
             return false;
         }
         categoryRepo.deleteById(categoryId);
