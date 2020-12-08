@@ -2,7 +2,10 @@ package de.hska.vsmlab.microservice.product.web;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import de.hska.vsmlab.microservice.product.perstistence.model.Category;
+import de.hska.vsmlab.microservice.product.perstistence.model.CategoryDoesNotExistsException;
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
+import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +28,24 @@ public class ProductCompositeController implements IProductCompositeController {
     @Autowired
     ICategoryController categoryService;
 
-    private final Map<Long, Product> productCache = new LinkedHashMap<Long, Product>();
+    private final Map<Long, Product> productCache = new LinkedHashMap<>();
 
     // no fallback method, the request will just fail
     @Override
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")})
-    public Product addProduct(Product body) {
-        return productCoreService.addProduct(body);
+    public Product addProduct(Product newProduct) throws ProductAlreadyExistsException, CategoryDoesNotExistsException {
+
+        Product product= productCoreService.addProduct(newProduct);
+        Category cat = categoryService.getCategoryById(newProduct.getCategoryId());
+        if (cat == null) {
+            throw new CategoryDoesNotExistsException();
+        }
+
+        if (product == null) {
+            throw new ProductAlreadyExistsException();
+        }
+        return product;
     }
 
 
@@ -42,10 +55,10 @@ public class ProductCompositeController implements IProductCompositeController {
     public List<Product> findProduct(String searchDescription, Double minPrice, Double maxPrice) {
         List<Product> products;
         if (minPrice == null || minPrice < 0 ){
-            minPrice = Double.valueOf(0);
+            minPrice = (double) 0;
         }
         if(maxPrice == null || maxPrice < 0 ) {
-            maxPrice = Double.valueOf(Double.MAX_VALUE);
+            maxPrice = Double.MAX_VALUE;
         }
 
         if (searchDescription != null && !searchDescription.isBlank() ) {

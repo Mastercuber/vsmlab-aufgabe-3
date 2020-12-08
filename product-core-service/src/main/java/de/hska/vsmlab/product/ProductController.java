@@ -3,16 +3,10 @@ package de.hska.vsmlab.product;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vsmlab.product.model.Product;
-import de.hska.vsmlab.product.model.ProductAlreadyExistsException;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -78,13 +72,13 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public Product addProduct(final Product productToAdd) throws ProductAlreadyExistsException {
+    public Product addProduct(final Product productToAdd){
         // check if product already exist
         final Iterable<Product> products = productRepo.findAll();
         for (Product product : products) {
             // check if there is already a product with the same name, price and category, otherwise add product
             if ((product.getName().equals(productToAdd.getName()) && product.getPrice() == productToAdd.getPrice() && product.getCategoryId() == productToAdd.getCategoryId())) {
-                throw new ProductAlreadyExistsException();
+                return null;
             }
         }
         productRepo.save(productToAdd);

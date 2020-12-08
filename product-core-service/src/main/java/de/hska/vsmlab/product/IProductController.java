@@ -1,7 +1,6 @@
 package de.hska.vsmlab.product;
 
 import de.hska.vsmlab.product.model.Product;
-import de.hska.vsmlab.product.model.ProductAlreadyExistsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface IProductController {
     boolean deleteProduct(@PathVariable long productId);
 
     @RequestMapping(value= "/product", method = RequestMethod.POST)
-    Product addProduct(@RequestBody Product productToAdd) throws ProductAlreadyExistsException;
+    Product addProduct(@RequestBody Product productToAdd);
 
     @RequestMapping(value = "/product", method = RequestMethod.GET, params = {"minPrice", "maxPrice"})
     @ResponseBody
