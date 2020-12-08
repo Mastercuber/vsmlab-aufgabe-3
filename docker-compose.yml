@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  edge-server:
+    build: edge-server
+    ports:
+      - "8090:8090"
+  service-registry:
+    build: service-registry
+    ports:
+      - "8088:8088"
+  category-core-service:
+    build: category-core-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - edge-server
+      - service-registry
+  product-core-service:
+    build: product-core-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - edge-server
+      - service-registry
+  user-core-service:
+    build: user-core-service
+    ports:
+      - "8759:8759"
+    depends_on:
+      - edge-server
+      - service-registry
+  role-core-service:
+    build: role-core-service
+    ports:
+      - "8760:8760"
+    depends_on:
+      - edge-server
+      - service-registry
+  product-composite-service:
+    build: product-composite-service
+    ports:
+      - "8763:8763"
+    depends_on:
+      - edge-server
+      - service-registry
+      - product-core-service
+      - category-core-service
+  login-system-composite-service:
+    build: login-system-composite-service
+    ports:
+      - "8762:8762"
+    depends_on:
+      - edge-server
+      - service-registry
+      - role-core-service
+      - user-core-service

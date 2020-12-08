@@ -2,7 +2,6 @@ package de.hska.vsmlab.microservice.product.web;
 
 
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
-import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

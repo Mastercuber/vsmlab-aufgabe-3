@@ -24,7 +24,7 @@ class UserServiceTests {
     private static User newUser;
     private static long newUserId = -1;
 
-    @BeforeAll
+/*    @BeforeAll
     public static void setup() {
         client.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8762"));
         user = new User("armin@hs-karlsruhe.de", "", "", "test", 1);
@@ -69,5 +69,5 @@ class UserServiceTests {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
-    }
+    }*/
 }

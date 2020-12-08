@@ -80,12 +80,6 @@
             <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
             <version>2.2.6.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>de.hska.vsmlab</groupId>
-            <artifactId>product-core-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
 		<dependency>
 			<groupId>com.netflix.hystrix</groupId>
 			<artifactId>hystrix-javanica</artifactId>

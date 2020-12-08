@@ -53,7 +53,7 @@ public class ProductCompositeController implements IProductCompositeController {
     public List<Product> findProduct(final String description, Double minPrice, Double maxPrice) {
         List<Product> products;
         if (minPrice == null || minPrice < 0) {
-            minPrice = (double) 0;
+            minPrice = 0d;
         }
         if (maxPrice == null || maxPrice < 0) {
             maxPrice = Double.MAX_VALUE;
@@ -93,8 +93,6 @@ public class ProductCompositeController implements IProductCompositeController {
     public List<Product> findProductCache(final String searchDescription, final Double minPrice, final Double maxPrice) {
         // we need to find the cached products for this "searchTerm" searchTerm = "descriptionMinPriceMaxPrice"
         final List<Product> cachedProducts = this.foundProducts.get(cacheKeyForParameters(searchDescription, minPrice, maxPrice));
-        System.out.println("cached!!!!");
-        System.out.println(cachedProducts);
         return cachedProducts;
     }
 
