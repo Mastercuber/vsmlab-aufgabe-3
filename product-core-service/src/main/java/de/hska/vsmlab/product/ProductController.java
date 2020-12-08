@@ -6,7 +6,12 @@ import de.hska.vsmlab.product.model.Product;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +35,8 @@ public class ProductController implements IProductController {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> productsArrayList = new ArrayList<>();
         products.forEach(productsArrayList::add);
-        for (Product prod:productsArrayList){
+        //save to cache
+        for(Product prod:productsArrayList) {
             productCache.putIfAbsent(prod.getId(), prod);
         }
         return productsArrayList;
@@ -120,13 +126,38 @@ public class ProductController implements IProductController {
         return searchResults;
     }
 
+    @Override
+    @HystrixCommand(fallbackMethod = "getAllProductsByCategoryIdCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
+    public List<Product> getAllProductsByCategoryId(long categoryId) {
+        final Iterable<Product> products = productRepo.findAll();
+        ArrayList<Product> results = new ArrayList<>();
+        for(Product product: products){
+            if(product.getCategoryId() == categoryId){
+                results.add(product);
+            }
+        }
+        return results;
+    }
+
+    public List<Product> getAllProductsByCategoryIdCache(long categoryId) {
+        ArrayList<Product> resultsFromCache = new ArrayList<>();
+        for(Product product: productCache.values()){
+            if(product.getCategoryId() == categoryId){
+                resultsFromCache.add(product);
+            }
+        }
+        return resultsFromCache;
+    }
+
     public List<Product> findProductByDescAndPriceCache(String desc, double minPrice, double maxPrice) {
 
         return productCache.values().stream().filter((Product p) -> this.matchesDescriptionOrPrice(p, desc, minPrice, maxPrice)).collect(Collectors.toList());
     }
 
     private boolean matchesDescriptionOrPrice(Product product, String description, double minPrice, double maxPrice) {
-        String searchWord = "\\b" + description.toLowerCase() + "\\b";
+        final String searchWord = description.toLowerCase();
         return product.getPrice() >= minPrice && product.getPrice() <= maxPrice && (product.getName().matches(searchWord) || product.getDetails().matches(searchWord));
     }
 }

@@ -1,6 +1,7 @@
 package de.hska.vsmlab.microservice.product.web;
 
-import de.hska.vsmlab.microservice.product.perstistence.model.CategoryDoesNotExistsException;
+
+import de.hska.vsmlab.microservice.product.perstistence.model.CategoryNotExistsException;
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
 import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +12,10 @@ public interface IProductCompositeController {
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
     @ResponseBody
-    Product addProduct(@RequestBody Product body) throws ProductAlreadyExistsException, CategoryDoesNotExistsException;
+    Product addProduct(@RequestBody Product body) throws ProductAlreadyExistsException, CategoryNotExistsException;
 
     @RequestMapping(value = "/product/find", method = RequestMethod.GET)
     @ResponseBody
-    List<Product> findProduct (@RequestParam(required = false) String description, @RequestParam(required = false) Double minPrice, @RequestParam(required = false) Double maxPrice);
+    List<Product> findProduct (@RequestParam(required = false, name = "description") String description, @RequestParam(required = false) Double minPrice, @RequestParam(required = false) Double maxPrice);
 
 }
