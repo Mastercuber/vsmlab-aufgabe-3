@@ -29,16 +29,23 @@ public class ProductController implements IProductController {
 
 
     @Override
+    @HystrixCommand(fallbackMethod = "getAllProductsCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
     public List<Product> getAllProducts() {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> productsArrayList = new ArrayList<>();
         products.forEach(productsArrayList::add);
+        for (Product prod:productsArrayList){
+            productCache.putIfAbsent(prod.getId(), prod);
+        }
         return productsArrayList;
     }
 
     public List<Product> getAllProductsCache() {
         return new ArrayList<>(productCache.values());
     }
+
 
     @Override
     @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
@@ -58,6 +65,7 @@ public class ProductController implements IProductController {
     public Product getProductCache(final Long productId) {
         return productCache.getOrDefault(productId, new Product());
     }
+
 
     @Override
     public boolean deleteProduct(final long productId) {
