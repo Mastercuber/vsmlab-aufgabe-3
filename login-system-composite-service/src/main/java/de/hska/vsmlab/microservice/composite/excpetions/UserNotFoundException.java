@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.user.excpetions;
+package de.hska.vsmlab.microservice.composite.excpetions;
 
 public class UserNotFoundException extends Exception {
 

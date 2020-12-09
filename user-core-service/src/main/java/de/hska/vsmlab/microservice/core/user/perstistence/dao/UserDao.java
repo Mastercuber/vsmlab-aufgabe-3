@@ -1,6 +1,6 @@
-package de.hska.vsmlab.microservice.user.perstistence.dao;
+package de.hska.vsmlab.microservice.core.user.perstistence.dao;
 
-import de.hska.vsmlab.microservice.user.perstistence.model.User;
+import de.hska.vsmlab.microservice.core.user.perstistence.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

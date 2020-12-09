@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.user.perstistence.model;
+package de.hska.vsmlab.microservice.composite.model;
 
 
 import javax.persistence.*;

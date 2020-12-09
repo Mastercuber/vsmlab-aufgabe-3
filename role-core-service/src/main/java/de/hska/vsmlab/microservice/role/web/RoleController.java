@@ -21,7 +21,7 @@ public class RoleController implements IRoleController {
 
     private LinkedHashMap<Long, Role> rolesCache = new LinkedHashMap<>();
 
-    public Role getRoleByIdCache(final Long roleId) {
+    public Role getRoleByIdCache(final long roleId) {
         return rolesCache.getOrDefault(roleId, new Role());
     }
 
@@ -29,19 +29,25 @@ public class RoleController implements IRoleController {
     @HystrixCommand(fallbackMethod = "getRoleByIdCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
-    public Role getRole(final Long roleId) {
+    public Role getRole(final long roleId) {
         final Optional<Role> byId = roleDao.findById(roleId);
 
         return byId.isPresent() ? byId.get() : null;
     }
 
     @Override
-    public Role createRole(String type, Integer level) {
-        Role role = new Role();
-        role.setType(type);
-        role.setLevel(level);
+    public Role createRole(Role role) {
+        try {
+            return roleDao.save(role);
+        } catch (Exception e) {
+            return new Role();
+        }
+    }
 
-        return roleDao.save(role);
+    @Override
+    public Boolean deleteRole(long roleId) {
+        roleDao.deleteById(roleId);
+        return true;
     }
 }
 

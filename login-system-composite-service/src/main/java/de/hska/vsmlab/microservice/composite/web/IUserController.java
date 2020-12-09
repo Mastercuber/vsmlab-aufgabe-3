@@ -1,6 +1,6 @@
-package de.hska.vsmlab.microservice.user.web;
+package de.hska.vsmlab.microservice.composite.web;
 
-import de.hska.vsmlab.microservice.user.perstistence.model.User;
+import de.hska.vsmlab.microservice.composite.model.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ public interface IUserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    User createUser(@RequestParam final String email, @RequestParam final String password, @RequestParam final String firstname, @RequestParam final String lastname);
+    User createUser(@RequestBody User user);
 
     @RequestMapping(value = "/user/{userId}/active", method = RequestMethod.PATCH)
     @ResponseBody

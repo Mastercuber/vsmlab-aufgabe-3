@@ -1,8 +1,9 @@
-package de.hska.vsmlab.microservice.user.web;
+package de.hska.vsmlab.microservice.composite.web;
 
-import de.hska.vsmlab.microservice.user.excpetions.UserNotFoundException;
-import de.hska.vsmlab.microservice.user.excpetions.WrongPasswordException;
-import de.hska.vsmlab.microservice.user.perstistence.model.User;
+import de.hska.vsmlab.microservice.composite.excpetions.UserExistsException;
+import de.hska.vsmlab.microservice.composite.excpetions.UserNotFoundException;
+import de.hska.vsmlab.microservice.composite.excpetions.WrongPasswordException;
+import de.hska.vsmlab.microservice.composite.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,9 @@ public class LoginSystemController implements ILoginSystemController {
     }
 
     @Override
-    public User register(User user) {
-        return userController.createUser(user.getEmail(), user.getPassword(), user.getFirstname(), user.getLastname());
+    public User register(User user) throws UserExistsException {
+        User userByEmail = userController.getUserByEmail(user.getEmail());
+        if (userByEmail != null) throw new UserExistsException();
+        return userController.createUser(user);
     }
 }

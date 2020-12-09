@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.user.perstistence.model;
+package de.hska.vsmlab.microservice.core.user.perstistence.model;
 
 
 import javax.persistence.*;
@@ -91,9 +91,9 @@ public class User implements java.io.Serializable {
 		return this.password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public long getRoleId() {
         return roleId;

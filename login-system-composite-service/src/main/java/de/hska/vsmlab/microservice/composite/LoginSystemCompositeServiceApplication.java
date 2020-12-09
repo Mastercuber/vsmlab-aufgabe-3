@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.user;
+package de.hska.vsmlab.microservice.composite;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

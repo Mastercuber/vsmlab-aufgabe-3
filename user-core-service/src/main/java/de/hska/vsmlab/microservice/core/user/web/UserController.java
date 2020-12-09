@@ -1,9 +1,9 @@
-package de.hska.vsmlab.microservice.user.web;
+package de.hska.vsmlab.microservice.core.user.web;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import de.hska.vsmlab.microservice.user.perstistence.dao.UserDao;
-import de.hska.vsmlab.microservice.user.perstistence.model.User;
+import de.hska.vsmlab.microservice.core.user.perstistence.dao.UserDao;
+import de.hska.vsmlab.microservice.core.user.perstistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -44,15 +44,13 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public User createUser(String email, String password, String firstname, String lastname) {
-        User user = new User();
-        user.setEmail(email);
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-        user.setRoleId(1);
-
-        return userDao.save(user);
+    public User createUser(User user) {
+        try {
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+            return userDao.save(user);
+        } catch (Exception e) {
+            return new User();
+        }
     }
 
     @Override
@@ -114,6 +112,12 @@ public class UserController implements IUserController {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean deleteAllUsers() {
+        userDao.deleteAll();
+        return true;
     }
 }
 

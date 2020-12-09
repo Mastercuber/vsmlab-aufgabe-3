@@ -7,9 +7,13 @@ public interface IRoleController {
 
     @RequestMapping(value = "/role/{roleId}", method = RequestMethod.GET)
     @ResponseBody
-    Role getRole(@PathVariable final Long roleId);
+    Role getRole(@PathVariable final long roleId);
 
     @RequestMapping(value = "/role", method = RequestMethod.POST)
     @ResponseBody
-    Role createRole(@RequestParam final String type, @RequestParam final Integer level);
+    Role createRole(@RequestBody final Role role);
+
+    @RequestMapping(value = "/role/{roleId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    Boolean deleteRole(@PathVariable final long roleId);
 }

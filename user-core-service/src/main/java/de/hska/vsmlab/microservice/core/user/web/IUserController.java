@@ -1,6 +1,6 @@
-package de.hska.vsmlab.microservice.user.web;
+package de.hska.vsmlab.microservice.core.user.web;
 
-import de.hska.vsmlab.microservice.user.perstistence.model.User;
+import de.hska.vsmlab.microservice.core.user.perstistence.model.User;
 import org.springframework.web.bind.annotation.*;
 
 public interface IUserController {
@@ -11,7 +11,7 @@ public interface IUserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    User createUser(@RequestParam final String email, @RequestParam final String password, @RequestParam final String firstname, @RequestParam final String lastname);
+    User createUser(@RequestBody User user);
 
     @RequestMapping(value = "/user/{userId}/active", method = RequestMethod.PATCH)
     @ResponseBody
@@ -28,4 +28,8 @@ public interface IUserController {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
     @ResponseBody
     boolean deleteUser(@PathVariable Long userId);
+
+    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
+    @ResponseBody
+    boolean deleteAllUsers();
 }
