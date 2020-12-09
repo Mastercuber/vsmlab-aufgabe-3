@@ -5,4 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class CategoryNotExistsException extends Exception {
+    public CategoryNotExistsException()
+    {
+        super("The category doesn't exists.");
+    }
 }
