@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Hystrix-Dashboard
+    name: hystrix-turbine
 server:
   port: 8097
 eureka:
@@ -17,4 +17,7 @@ eureka:
 debug: false
 hystrix:
   dashboard:
-    proxyStreamAllowList=*:
+    proxyStreamAllowList: '*'
+turbine:
+  app-config: user-service, role-service, product-service, category-service, product-composite-service, login-system-service
+  cluster-name-expression: new String("default")
