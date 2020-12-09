@@ -8,3 +8,14 @@ Am besten erst den [Edge Server](edge-server/src/main/java/de/hska/vsmlab/EdgeSe
 * [Zuul](http://localhost:8089/api)
 * [Micro Service Endpunkt](http://localhost:8089/api/appservice)
 * [Micro Service Funktionsendpunkt](http://localhost:8089/api/appservice/appname)
+* [Hystrix Dashboard](http://localhost:8097/hystrix)
+* [Turbine Stream ("Default" Cluster)](http://localhost:8097/turbine.stream?cluster=default)
+
+Hystrix Endpunkte:
+* [User Service](http://localhost:8759/actuator/hystrix.stream)
+* [Role Service](http://localhost:8760/actuator/hystrix.stream)
+* [Product Service](http://localhost:8091/actuator/hystrix.stream)
+* [Category Service](http://localhost:8761/actuator/hystrix.stream)
+* [Product Composite Service](http://localhost:8763/actuator/hystrix.stream)
+* [Login System Composite Service](http://localhost:8762/actuator/hystrix.stream)
+
