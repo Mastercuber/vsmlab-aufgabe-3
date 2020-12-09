@@ -1,6 +1,6 @@
 Das Projekt als Maven Projekt importieren und einmal bauen (z. B. `mvn package`) [Testfehler ignorieren!]. Die einzelnen Applikationen als Ausführungskonfiguration angeben.
 
-Am besten erst den [Edge Server](edge-server/src/main/java/de/hska/vsmlab/EdgeServerApplication.java) und die [Service Registry](service-registry/src/main/java/de/hska/vsmlab/ServiceRegistryApplication.java) ausführen und anschließend den [Microservice](microservice/src/main/java/de/hska/vsmlab/MicroServiceApplication.java). 
+Am besten erst den [Edge Server](edge-server/src/main/java/de/hska/vsmlab/microservice/edge/EdgeServerApplication.java) und die [Service Registry](service-registry/src/main/java/de/hska/vsmlab/microservice/registry/ServiceRegistryApplication.java) ausführen und anschließend die Microservices. 
 
 * [Startseite](http://localhost:8088/index.html)  
 * [Eureka](http://localhost:8088/eureka)  

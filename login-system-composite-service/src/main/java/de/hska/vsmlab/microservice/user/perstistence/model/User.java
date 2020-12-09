@@ -22,8 +22,8 @@ public class User implements java.io.Serializable {
 	private long id;
 
 
-	@Column(name = "username", unique = true, nullable = false)
-	private String username;
+	@Column(name = "email", unique = true, nullable = false)
+	private String email;
 
 
 	@Column(name = "name", nullable = false)
@@ -46,9 +46,9 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String username, String firstname, String lastname,
+	public User(String email, String firstname, String lastname,
                 String password, long roleId) {
-		this.username = username;
+		this.email = email;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.password = password;
@@ -63,12 +63,12 @@ public class User implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return this.username;
+	public String getEmail() {
+		return this.email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String username) {
+		this.email = username;
 	}
 
 	public String getFirstname() {

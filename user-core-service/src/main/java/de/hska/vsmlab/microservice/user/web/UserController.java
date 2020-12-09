@@ -21,7 +21,7 @@ public class UserController implements IUserController {
     private UserDao userDao;
 
     private LinkedHashMap<Long, User> usersCache = new LinkedHashMap<>();
-    private LinkedHashMap<String, Long> userNameToIdMappings = new LinkedHashMap<>();
+    private LinkedHashMap<String, Long> emailToIdMappings = new LinkedHashMap<>();
 
     public User getUserByIdCache(final Long userId) {
         return usersCache.getOrDefault(userId, new User());
@@ -36,7 +36,7 @@ public class UserController implements IUserController {
         User user = null;
         if(byId.isPresent()) {
             user = byId.get();
-            userNameToIdMappings.putIfAbsent(user.getUsername(), user.getId());
+            emailToIdMappings.putIfAbsent(user.getEmail(), user.getId());
             usersCache.putIfAbsent(user.getId(), user);
         }
 
@@ -44,9 +44,9 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public User createUser(String username, String password, String firstname, String lastname) {
+    public User createUser(String email, String password, String firstname, String lastname) {
         User user = new User();
-        user.setUsername(username);
+        user.setEmail(email);
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
@@ -79,8 +79,8 @@ public class UserController implements IUserController {
         return null;
     }
 
-    public User getUserByUsernameCache(String username) {
-        final Long userId = userNameToIdMappings.get(username);
+    public User getUserByEmailCache(String email) {
+        final Long userId = emailToIdMappings.get(email);
         User user = null;
 
         if (userId != null) {
@@ -91,14 +91,14 @@ public class UserController implements IUserController {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "getUserByUsernameCache", commandProperties = {
+    @HystrixCommand(fallbackMethod = "getUserByEmailCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     })
-    public User getUserByUsername(String username) {
-        final User user = userDao.findByUsername(username);
+    public User getUserByEmail(String email) {
+        final User user = userDao.findByEmail(email);
 
         if (user != null) {
-            userNameToIdMappings.putIfAbsent(username, user.getId());
+            emailToIdMappings.putIfAbsent(email, user.getId());
             usersCache.putIfAbsent(user.getId(), user);
         }
 

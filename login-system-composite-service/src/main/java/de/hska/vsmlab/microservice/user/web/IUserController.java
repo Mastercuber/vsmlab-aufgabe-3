@@ -23,9 +23,9 @@ public interface IUserController {
     @ResponseBody
     User setInactive(@PathVariable final Long userId);
 
-    @RequestMapping(value = "/user/byUsername", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/byEmail", method = RequestMethod.GET)
     @ResponseBody
-    User getUserByUsername(@RequestParam String username);
+    User getUserByEmail(@RequestParam String email);
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
     @ResponseBody
