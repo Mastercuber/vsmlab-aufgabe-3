@@ -39,11 +39,12 @@ class ProductCompositeServiceTests {
 
     }
 
-/*    @Test
+    @Test
     void addProductTest() {
         ResponseEntity<Product> response = compositeClient.postForEntity("/add", ankleBoots, Product.class);
         assertEquals(200, response.getStatusCodeValue());
-    }*/
+        ankleBoots = response.getBody();
+    }
 
 /*    @Test
     void addProductFailsIfCategoryDoesntExist() {
