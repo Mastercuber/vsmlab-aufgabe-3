@@ -11,7 +11,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://service-registry:8088/eureka
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8088/eureka}
 
 
 debug: false
@@ -19,5 +19,5 @@ hystrix:
   dashboard:
     proxyStreamAllowList: '*'
 turbine:
-  app-config: user-service, role-service, product-service, category-service, product-composite-service, login-system-service
+  app-config: user-service, role-service, product-service, category-service, product-composite-service
   cluster-name-expression: new String("default")

@@ -1,33 +1,11 @@
 package de.hska.vsmlab.microservice.product.perstistence.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import javax.persistence.*;
-
-@Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
 public class Product {
-    private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "price")
     private double price;
-
-    @Column(name = "category_id")
     private long categoryId;
-
-    @Column(name = "details")
     private String details;
 
     public Product(String name, double price, long categoryId) {

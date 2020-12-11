@@ -13,7 +13,7 @@ public class Role implements java.io.Serializable {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 46312341L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,6 @@ public class Role implements java.io.Serializable {
 
 	@Column
 	private String type;
-
 
 	@Column
 	private int level;

@@ -1,20 +1,12 @@
 package de.hska.vsmlab.product;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vsmlab.product.model.Product;
 import de.hska.vsmlab.product.model.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class ProductController implements IProductController {
@@ -28,9 +20,6 @@ public class ProductController implements IProductController {
 
 
     @Override
-    @HystrixCommand(fallbackMethod = "getAllProductsCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     public List<Product> getAllProducts() {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> productsArrayList = new ArrayList<>();
@@ -42,15 +31,7 @@ public class ProductController implements IProductController {
         return productsArrayList;
     }
 
-    public List<Product> getAllProductsCache() {
-        return new ArrayList<>(productCache.values());
-    }
-
-
     @Override
-    @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     public Product getProduct(final Long productId) {
         final Optional<Product> productOpt = productRepo.findById(productId);
         if (productOpt.isEmpty()) {
@@ -61,11 +42,6 @@ public class ProductController implements IProductController {
 
         return product;
     }
-
-    public Product getProductCache(final Long productId) {
-        return productCache.getOrDefault(productId, new Product());
-    }
-
 
     @Override
     public boolean deleteProduct(final long productId) {
@@ -92,9 +68,6 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "findProductByPriceCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     public List<Product> findProductByPrice(double minPrice, double maxPrice) {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> searchResults = new ArrayList<>();
@@ -106,15 +79,7 @@ public class ProductController implements IProductController {
         return searchResults;
     }
 
-    public List<Product> findProductByPriceCache(double minPrice, double maxPrice) {
-        return productCache.values().stream().filter((Product p) -> p.getPrice() >= minPrice && p.getPrice() <= maxPrice).collect(Collectors.toList());
-
-    }
-
     @Override
-    @HystrixCommand(fallbackMethod = "findProductByDescAndPriceCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     public List<Product> findProductByDescAndPrice(String description, double minPrice, double maxPrice) {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> searchResults = new ArrayList<>();
@@ -127,9 +92,6 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "getAllProductsByCategoryIdCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     public List<Product> getAllProductsByCategoryId(long categoryId) {
         final Iterable<Product> products = productRepo.findAll();
         ArrayList<Product> results = new ArrayList<>();
@@ -139,21 +101,6 @@ public class ProductController implements IProductController {
             }
         }
         return results;
-    }
-
-    public List<Product> getAllProductsByCategoryIdCache(long categoryId) {
-        ArrayList<Product> resultsFromCache = new ArrayList<>();
-        for(Product product: productCache.values()){
-            if(product.getCategoryId() == categoryId){
-                resultsFromCache.add(product);
-            }
-        }
-        return resultsFromCache;
-    }
-
-    public List<Product> findProductByDescAndPriceCache(String desc, double minPrice, double maxPrice) {
-
-        return productCache.values().stream().filter((Product p) -> this.matchesDescriptionOrPrice(p, desc, minPrice, maxPrice)).collect(Collectors.toList());
     }
 
     private boolean matchesDescriptionOrPrice(Product product, String description, double minPrice, double maxPrice) {

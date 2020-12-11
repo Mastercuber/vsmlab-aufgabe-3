@@ -89,7 +89,8 @@ public class ProductCompositeController implements IProductCompositeController {
         return description + minPrice.toString() + maxPrice.toString();
     }
 
-    public List<Product> findProductCache(final String searchDescription, Double minPrice, Double maxPrice) {
+    @HystrixCommand
+    public List<Product> findProductCache(final String description, Double minPrice, Double maxPrice) {
         // we need to find the cached products for this "searchTerm" searchTerm = "descriptionMinPriceMaxPrice"
         if (minPrice == null || minPrice < 0) {
             minPrice = 0d;
@@ -97,7 +98,7 @@ public class ProductCompositeController implements IProductCompositeController {
         if (maxPrice == null || maxPrice < 0) {
             maxPrice = Double.MAX_VALUE;
         }
-        final List<Product> cachedProducts = this.foundProducts.get(cacheKeyForParameters(searchDescription, minPrice, maxPrice));
+        final List<Product> cachedProducts = this.foundProducts.get(cacheKeyForParameters(description, minPrice, maxPrice));
         return cachedProducts;
     }
 

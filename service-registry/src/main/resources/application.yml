@@ -13,7 +13,7 @@ eureka:
     fetch-registry: false
 
     service-url:
-      defaultZone: http://service-registry:8088/eureka
+      defaultZone: http://localhost:8088/eureka
   dashboard:
     path: /eureka-ui
     enabled: true
