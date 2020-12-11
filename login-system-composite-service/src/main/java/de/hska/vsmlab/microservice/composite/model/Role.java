@@ -1,30 +1,10 @@
 package de.hska.vsmlab.microservice.composite.model;
 
 
-import javax.persistence.*;
+public class Role {
 
-/**
- * This class contains details about roles.
- */
-@Entity
-@Table
-public class Role implements java.io.Serializable {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
 	private long id;
-
-	@Column
 	private String type;
-
-
-	@Column
 	private int level;
 
 	public Role() {

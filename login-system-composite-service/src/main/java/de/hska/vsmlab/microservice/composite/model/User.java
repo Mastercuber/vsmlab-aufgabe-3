@@ -1,46 +1,14 @@
 package de.hska.vsmlab.microservice.composite.model;
 
 
-import javax.persistence.*;
+public class User {
 
-/**
- * This class contains the users of the webshop.
- */
-@Entity
-@Table
-public class User implements java.io.Serializable {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
 	private long id;
-
-
-	@Column(name = "email", unique = true, nullable = false)
 	private String email;
-
-
-	@Column(name = "name", nullable = false)
 	private String firstname;
-
-
-	@Column(name = "lastname", nullable = false)
 	private String lastname;
-
-
-	@Column(name = "password", nullable = false)
 	private String password;
-
-	@Column(name = "role")
     private long roleId;
-
-	@Column
     private boolean active;
 
 	public User() {
