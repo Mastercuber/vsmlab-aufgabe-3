@@ -18,4 +18,8 @@ public interface IProductCompositeController {
     @ResponseBody
     List<Product> findProduct (@RequestParam(required = false, name = "description") String description, @RequestParam(required = false) Double minPrice, @RequestParam(required = false) Double maxPrice);
 
+    @RequestMapping(value = "/category/delete/{categoryId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    Boolean deleteCategory(@PathVariable long categoryId);
+
 }

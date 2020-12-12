@@ -77,6 +77,15 @@ public class ProductCompositeController implements IProductCompositeController {
         return products;
     }
 
+    @Override
+    @HystrixCommand
+    public Boolean deleteCategory(long categoryId) {
+        List<Product> allProductsByCategoryId = productCoreService.getAllProductsByCategoryId(categoryId);
+        if (allProductsByCategoryId.isEmpty()) return categoryService.deleteCategory(categoryId);
+
+        return false;
+    }
+
     /**
      * return the cache key for our search function. cache key =" descriptionMinPriceMaxPrice"
      *
