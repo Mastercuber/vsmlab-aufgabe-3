@@ -7,6 +7,8 @@ import de.hska.vsmlab.microservice.product.perstistence.model.CategoryNotExistsE
 import de.hska.vsmlab.microservice.product.perstistence.model.Product;
 import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,12 +29,16 @@ public class ProductCompositeController implements IProductCompositeController {
     @Autowired
     ICategoryController categoryService;
 
+    @Autowired
+    OAuth2RestTemplate oAuth2RestTemplate;
+
 
     private final Map<String, List<Product>> foundProducts = new LinkedHashMap<>();
 
     @RequestMapping("/")
     public ModelAndView home() {
-        return null;//new ModelAndView("products", "products", );
+        final ResponseEntity<List> responseEntity = oAuth2RestTemplate.getForEntity("http://localhost:8091/product", List.class);
+        return new ModelAndView("products", "products",responseEntity.getBody());
     }
 
 
