@@ -8,14 +8,15 @@ import de.hska.vsmlab.microservice.product.perstistence.model.Product;
 import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@Component
 public class ProductCompositeController implements IProductCompositeController {
 
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -26,7 +27,13 @@ public class ProductCompositeController implements IProductCompositeController {
     @Autowired
     ICategoryController categoryService;
 
+
     private final Map<String, List<Product>> foundProducts = new LinkedHashMap<>();
+
+    @RequestMapping("/")
+    public ModelAndView home() {
+        return null;//new ModelAndView("products", "products", );
+    }
 
 
     // no fallback method, the request will just fail
