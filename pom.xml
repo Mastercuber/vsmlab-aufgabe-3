@@ -21,5 +21,6 @@
         <module>product-core-service</module>
         <module>category-core-service</module>
         <module>hystrix-dashboard</module>
+        <module>oauth</module>
     </modules>
 </project>
