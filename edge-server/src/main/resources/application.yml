@@ -1,6 +1,7 @@
 spring:
   application:
     name: Edge Server (Zuul) | Loadbalancer (Ribbon)
+
 server:
   port: 8090
 eureka:
@@ -13,6 +14,20 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8088/eureka}
 
+logging:
+  level:
+    root: WARN
+    org.springframework: INFO
+
+security:
+  oauth2:
+    client:
+      messaging-client-client-creds:
+        client-id: messaging-client
+        client-secret: secret
+        grant-type: client_credentials
+        access-token-uri: http://localhost:8888/oauth/token
+        scope: message.read, message.write
 
 debug: false
 zuul:
