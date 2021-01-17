@@ -1,0 +1,8 @@
+### Für die Authentifizierung den Nutzernamen und Password
+### als BASE64 String in die Authorization Kopfzeile eintragen
+
+### Product Core Service Token
+### btoa('core-service-client:secret')
+POST http://localhost:8888/oauth/token?grant_type=client_credentials
+Content-Type: application/json
+Authorization: Basic Y29yZS1zZXJ2aWNlLWNsaWVudDpzZWNyZXQ=
