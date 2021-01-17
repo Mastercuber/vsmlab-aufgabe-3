@@ -23,11 +23,11 @@ security:
   oauth2:
     client:
       messaging-client-client-creds:
-        client-id: messaging-client
+        client-id: core-service-client
         client-secret: secret
         grant-type: client_credentials
         access-token-uri: http://localhost:8888/oauth/token
-        scope: message.read, message.write
+        scope: product.read, product.write, role.read, role.write, user.read, user.write, category.read, category.write
 
 debug: false
 zuul:

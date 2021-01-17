@@ -46,12 +46,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
-        clients.inMemory()
-                .withClient("messaging-client")
+        clients
+            .inMemory()
+                .withClient("core-service-client")
                 .authorizedGrantTypes("client_credentials")
-                .scopes("message.read", "message.write")
+                .scopes("product.read", "product.write", "role.read", "role.write", "user.read", "user.write", "category.read", "category.write")
                 .secret("{noop}secret")
-                .redirectUris("http://localhost:8888/hello");
+                .resourceIds("role-core-service", "product-core-service", "user-core-service", "category-core-service");
+
         // @formatter:on
     }
 

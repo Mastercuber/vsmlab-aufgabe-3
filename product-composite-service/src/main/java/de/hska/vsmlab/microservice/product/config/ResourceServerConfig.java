@@ -18,7 +18,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.authorizeRequests().antMatchers("/product/**").permitAll()
+        http
+            .authorizeRequests()
+                .antMatchers("/product/**").permitAll()
+                .antMatchers("/category/**").permitAll()
         .anyRequest().authenticated();
         // @formatter:on
     }

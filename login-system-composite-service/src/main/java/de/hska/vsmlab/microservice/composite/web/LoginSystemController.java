@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/")
+@RestController
 public class LoginSystemController implements ILoginSystemController {
 
     @Autowired
