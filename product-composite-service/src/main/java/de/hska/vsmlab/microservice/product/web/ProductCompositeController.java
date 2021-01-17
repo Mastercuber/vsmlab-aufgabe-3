@@ -9,6 +9,7 @@ import de.hska.vsmlab.microservice.product.perstistence.model.ProductAlreadyExis
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,6 @@ public class ProductCompositeController implements IProductCompositeController {
     @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
     @Autowired
     ICategoryController categoryService;
-
 
     private final Map<String, List<Product>> foundProducts = new LinkedHashMap<>();
 
@@ -50,7 +50,7 @@ public class ProductCompositeController implements IProductCompositeController {
     @HystrixCommand(fallbackMethod = "findProductCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")})
     public List<Product> findProduct(final String description, Double minPrice, Double maxPrice) {
-        List<Product> products;
+        List<Product> products = new ArrayList<>();
         if (minPrice == null || minPrice < 0) {
             minPrice = 0d;
         }
@@ -59,7 +59,11 @@ public class ProductCompositeController implements IProductCompositeController {
         }
 
         if (description != null && !description.isBlank()) {
-            products = productCoreService.findProductByDescAndPrice(description, minPrice, maxPrice);
+            try {
+                products = productCoreService.findProductByDescAndPrice(description, minPrice, maxPrice);
+            } catch (Exception e) {
+                System.out.println("Exception: " + e.getMessage());
+            }
             // check if the given description matches any category name
             List<Category> categories = categoryService.getAllCategories();
             for (Category category : categories) {

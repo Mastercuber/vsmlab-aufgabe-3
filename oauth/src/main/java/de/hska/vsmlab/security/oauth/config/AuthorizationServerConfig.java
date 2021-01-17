@@ -50,9 +50,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             .inMemory()
                 .withClient("core-service-client")
                 .authorizedGrantTypes("client_credentials")
-                .scopes("product.read", "product.write", "role.read", "role.write", "user.read", "user.write", "category.read", "category.write")
+                .scopes("product-composite-service", "product.read", "product.write", "role.read", "role.write", "user.read", "user.write", "category.read", "category.write")
                 .secret("{noop}secret")
-                .resourceIds("role-core-service", "product-core-service", "user-core-service", "category-core-service");
+                .resourceIds("role-core-service", "product-core-service", "user-core-service", "category-core-service", "product-composite-service");
 
         // @formatter:on
     }
