@@ -4,48 +4,30 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
- * The OAuth2 authentication request interceptor. It populates the {@code Authorization} header of any remote service
- * call request based on the current {@link OAuth2ClientContext} by setting the bearer access token.
- *
- * @author Jakub Narloch
+ * Der OAuth2 Interceptor extrahiert das Bearer Token aus dem SecurityContext und setzt es
+ * als Wert im Authorization Header in jeder Anfrage vom aktuellen Dienst zu weiteren Diensten
+ * über die Feign Client Bibliothek
  */
 @Component
 public class OAuth2FeignRequestInterceptor implements RequestInterceptor {
 
-    /**
-     * The logger instance used by this class.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(io.jmnarloch.spring.cloud.feign.OAuth2FeignRequestInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2FeignRequestInterceptor.class);
 
     /**
-     * The authorization header name.
+     * Name des Authorization Headers.
      */
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     /**
-     * The {@code Bearer} token type.
+     * Typ des Tokens
      */
     private static final String BEARER_TOKEN_TYPE = "Bearer";
 
-    /**
-     * Current OAuth2 authentication context.
-     */
-    private final OAuth2ClientContext oauth2ClientContext;
-
-    /**
-     * Creates new instance of {@link io.jmnarloch.spring.cloud.feign.OAuth2FeignRequestInterceptor} with client context.
-     *
-     * @param oauth2ClientContext the OAuth2 client context
-     */
-    public OAuth2FeignRequestInterceptor(OAuth2ClientContext oauth2ClientContext) {
-        Assert.notNull(oauth2ClientContext, "Context can not be null");
-        this.oauth2ClientContext = oauth2ClientContext;
-    }
 
     /**
      * {@inheritDoc}
@@ -55,12 +37,14 @@ public class OAuth2FeignRequestInterceptor implements RequestInterceptor {
 
         if (template.headers().containsKey(AUTHORIZATION_HEADER)) {
             LOGGER.warn("The Authorization token has been already set");
-        } else if (oauth2ClientContext.getAccessTokenRequest().getExistingToken() == null) {
+        } else if (SecurityContextHolder.getContext().getAuthentication() == null) {
             LOGGER.warn("Can not obtain existing token for request, if it is a non secured request, ignore.");
         } else {
-            LOGGER.debug("Constructing Header {} for Token {}", AUTHORIZATION_HEADER, BEARER_TOKEN_TYPE);
-            template.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE,
-                    oauth2ClientContext.getAccessTokenRequest().getExistingToken().toString()));
+            LOGGER.debug("Constructing Header {} for Token Type {}", AUTHORIZATION_HEADER, BEARER_TOKEN_TYPE);
+            template.header(AUTHORIZATION_HEADER, String.format("%s %s",
+                    ((OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getTokenType(),
+                    ((OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getTokenValue())
+            );
         }
     }
 }

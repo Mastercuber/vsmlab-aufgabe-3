@@ -1,6 +1,5 @@
 package de.hska.vsmlab.microservice.product;
 
-import io.jmnarloch.spring.cloud.feign.OAuth2FeignAutoConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +8,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Import;
 
 import javax.annotation.PostConstruct;
 
@@ -18,7 +16,6 @@ import javax.annotation.PostConstruct;
 @EnableHystrix
 @RibbonClient("product-composite-service")
 @EnableFeignClients
-@Import(OAuth2FeignAutoConfiguration.class)
 public class ProductCompositeServiceApplication {
 
     final Logger logger = LoggerFactory.getLogger(ProductCompositeServiceApplication.class);

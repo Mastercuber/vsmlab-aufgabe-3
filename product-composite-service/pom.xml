@@ -44,12 +44,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-        <!-- Fügt einen Interceptor hinzu um den Authorization Header auch bei den FeignClient HTTP Anfragen zu setzen -->
-        <dependency>
-            <groupId>io.jmnarloch</groupId>
-            <artifactId>feign-oauth2-spring-cloud-starter</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
