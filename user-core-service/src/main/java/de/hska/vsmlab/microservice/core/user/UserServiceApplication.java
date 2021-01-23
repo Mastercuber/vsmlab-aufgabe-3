@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.annotation.PostConstruct;
 
@@ -32,7 +33,7 @@ public class UserServiceApplication {
         user.setFirstname("Armin");
         user.setLastname("Kunkel");
         user.setEmail("armin@hs-karlsruhe.de");
-        user.setPassword("test");
+        user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
         user.setRoleId(1);
 
         userDao.save(user);

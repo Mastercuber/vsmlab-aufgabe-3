@@ -49,10 +49,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		http
 			.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user").access("#oauth2.hasScope('user.write')")
-                .antMatchers(HttpMethod.PATCH, "/user/*/active").access("#oauth2.hasScope('user.write')")
-                .antMatchers(HttpMethod.PATCH, "/user/*/inactivate").access("#oauth2.hasScope('user.write')")
-				.antMatchers(HttpMethod.GET, "/user/*").access("#oauth2.hasScope('user.read')")
-                .antMatchers(HttpMethod.GET, "/user/byEmail").access("#oauth2.hasScope('user.read')")
+                .antMatchers(HttpMethod.GET, "/user/byEmail").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/user/*").access("#oauth2.hasScope('user.write')")
             .anyRequest().authenticated();
 		// @formatter:on

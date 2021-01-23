@@ -1,4 +1,4 @@
-package de.hska.vsmlab.microservice.product.interceptor;
+package de.hska.vsmlab.microservice.composite.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

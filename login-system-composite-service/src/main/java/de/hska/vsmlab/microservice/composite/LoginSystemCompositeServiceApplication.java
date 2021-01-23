@@ -1,6 +1,5 @@
 package de.hska.vsmlab.microservice.composite;
 
-import io.jmnarloch.spring.cloud.feign.OAuth2FeignAutoConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,16 +8,12 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableHystrix
-@EnableOAuth2Client
 @RibbonClient("login-system-composite-service")
-@Import(OAuth2FeignAutoConfiguration.class)
 public class LoginSystemCompositeServiceApplication {
 
     final Logger logger = LoggerFactory.getLogger(LoginSystemCompositeServiceApplication.class);
