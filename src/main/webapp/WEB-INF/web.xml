@@ -16,4 +16,7 @@
     <description></description>
     <role-name>mytomcat</role-name>
   </security-role>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
 </web-app>
