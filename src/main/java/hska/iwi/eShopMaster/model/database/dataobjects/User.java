@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class User implements java.io.Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -21,24 +21,26 @@ public class User implements java.io.Serializable {
 	@Column(name = "id", nullable = false)
 	private int id;
 
-	
+
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
-	
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
 	@Column(name = "name", nullable = false)
 	private String firstname;
 
-	
+
 	@Column(name = "lastname", nullable = false)
 	private String lastname;
 
-	
+
 	@Column(name = "password", nullable = false)
 	private String password;
 
 	@ManyToOne()
-	@JoinColumn(name = "role", nullable = false)	
+	@JoinColumn(name = "role", nullable = false)
 	private Role role;
 
 	public User() {
@@ -101,4 +103,11 @@ public class User implements java.io.Serializable {
 		this.role = role;
 	}
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
